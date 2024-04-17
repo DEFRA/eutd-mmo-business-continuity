@@ -1,0 +1,61 @@
+{% extends "layout.njk" %}
+
+{% set mainClasses = "govuk-main-wrapper--l" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Validate Certificate Number"
+      }
+    ]
+  }) }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: "/"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if isValid %}
+        {{ govukPanel({
+          titleText: "Validation confirmed",
+          html: "Certificate number<br/>\n<strong>" + certNumber + '</strong><br/>\n<span class="govuk-!-font-size-16">Issued on ' + timestamp + "</span>"
+        }) }}
+
+        <p class="govuk-body">
+          For further enquiries please contact <a href="mailto:ukiuuslo@marinemanagement.org.uk">ukiuuslo@marinemanagement.org.uk</a></p>
+      {% else %}
+        <h1 class="govuk-heading-xl">The certificate number entered is not valid</h1>
+
+        {% if status %}
+          {{ govukWarningText({
+            text: "The certificate number entered refers to a " + status.toUpperCase() + " certificate",
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
+
+        <p class="govuk-body">
+          For further enquiries please contact <a href="mailto:ukiuuslo@marinemanagement.org.uk">ukiuuslo@marinemanagement.org.uk</a></p>
+
+        <p class="govuk-body"><a href="/" class="govuk-link">Search again</a></p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Enter Certificate Details"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Sign in with your credentials</h1>
+
+      <form method="post" action="login">
+        {{ govukInput({
+          label: {
+            text: "Username"
+          },
+          id: "username",
+          name: "username"
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Password"
+          },
+          type: 'password',
+          id: "password",
+          name: "password"
+        }) }}
+
+        {{ govukButton({
+          text: "Continue",
+          preventDoubleClick: true
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Enter Certificate Details"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="/admin/check-certificate-details" method="post" novalidate>
+        {{ govukRadios({
+          fieldset: {
+            legend: {
+              text: "What is the Certificate Status?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          idPrefix: "status",
+          name: "status",
+          items: [
+            {
+              value: "DRAFT",
+              text: "Draft",
+              selected: status === 'DRAFT'
+            },
+            {
+              value: "COMPLETE",
+              text: "Complete",
+              selected: status === 'COMPLETE'
+            },
+            {
+              value: "VOID",
+              text: "Void",
+              selected: status === 'VOID'
+            }
+          ]
+        }) }}
+
+        <input type="hidden" name="certNumber" value="{{ certNumber }}">
+        <input type="hidden" name="timestamp" value="{{ timestamp }}">
+
+        {{ govukButton({
+          text: "Save to system",
+          preventDoubleClick: true
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

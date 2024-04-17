@@ -1,0 +1,73 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Enter Certificate Details"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="/admin/enter-certificate-status" method="post" novalidate>
+        {{ govukDateInput({
+          fieldset: {
+            legend: {
+              text: "What is the Issue Date?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: "For example, 31 10 2019"
+          },
+          id: "timestamp",
+          namePrefix: "timestamp",
+          items: [
+            {
+              name: "day",
+              classes: "govuk-input--width-2",
+              autocomplete: "timestamp-day",
+              value: timestamp.day
+            },
+            {
+              name: "month",
+              classes: "govuk-input--width-2",
+              autocomplete: "timestamp-month",
+              value: timestamp.month
+            },
+            {
+              name: "year",
+              classes: "govuk-input--width-4",
+              autocomplete: "timestamp-year",
+              value: timestamp.year
+            }
+          ]
+        }) }}
+
+        <input type="hidden" name="certNumber" value="{{ certNumber }}">
+        <input type="hidden" name="status" value="{{ status }}">
+
+        {{ govukButton({
+          text: "Continue",
+          preventDoubleClick: true
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
